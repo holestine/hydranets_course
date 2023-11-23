@@ -354,7 +354,7 @@ saver = Saver(
     save_several_mode=all,
 )
 
-n_epochs = 200
+n_epochs = 250
 
 hydranet = nn.DataParallel(Extended_Model())
 
@@ -445,10 +445,12 @@ def validate(model, metrics, dataloader):
             targets = [target.squeeze(dim=1).cpu().numpy() for target in targets]
 
             # Forward
-            outputs = model(input)
+            outputs, depth2 = model(input)
+            outputs.pop(-1)
+            outputs[1] = depth2
 
             # Backward
-            for out, target, metric in zip(outputs[0][0:2], targets, metrics):
+            for out, target, metric in zip(outputs, targets, metrics):
                 metric.update(
                     F.interpolate(out, size=target.shape[1:], mode="bilinear", align_corners=False)
                     .squeeze(dim=1)
