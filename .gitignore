@@ -1,0 +1,9 @@
+__MACOSX/*
+__pycache__
+data
+nyud
+extended
+args.json
+.ipynb_checkpoints
+.tar
+hydranets-data
